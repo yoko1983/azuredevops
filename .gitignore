@@ -6,4 +6,4 @@ __pycache__/
 # Personal files
 *.log
 settings_app.json
-func_test_org.py
+func_mytest.py

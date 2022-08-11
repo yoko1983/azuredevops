@@ -12,6 +12,7 @@
 `pip install openpyxl`
 
 # トークンを作成
+AzureDevOps状で、WorkItem/GitRepoの参照・更新権のトークンを作成する
 
 # settings_app.jsonを作成しルートディレクトリに格納
 `vi ./settings_app.json`
@@ -29,3 +30,6 @@
     } 
 }
 ```
+
+# 実行
+```python3 ./func_test.py```

@@ -1,5 +1,9 @@
 # 準備
-`cd ~/work`
+GitHubよりcloneし、プログラムを実行できるように準備を行う
+
+`cd [work_dir]`
+
+`git clone https://github.com/yoko1983/azuredevops.git`
 
 `python3 -m venv env/azuredevops`
 
@@ -7,15 +11,15 @@
 
 `cd azuredevops/`
 
-`pip install requests`
-
-`pip install openpyxl`
+`pip3 install -r requirements.txt`
 
 # トークンを作成
-AzureDevOps状で、WorkItem/GitRepoの参照・更新権のトークンを作成する
+AzureDevOps上で、WorkItem/GitRepoの参照・更新権のトークンを作成する
 
-# settings_app.jsonを作成しルートディレクトリに格納
-`vi ./settings_app.json`
+# アプリケーション設定ファイルを作成
+settings_app.jsonを作成する。
+
+`vi [work_dir]/azuredevops/settings_app.json`
 
 
 ```

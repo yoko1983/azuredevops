@@ -7,3 +7,4 @@ __pycache__/
 *.log
 settings_app.json
 func_mytest.py
+readme_mine.md

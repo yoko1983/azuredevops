@@ -91,10 +91,10 @@ def print_changed_filepath_dict_by_pr(work_item_id, branch_name):
         logger.error(e)
         raise e
 
-def print_changed_filepath_dict_by_repo(work_item_id, branch_name):
+def print_changed_filepath_dict_by_repo_pr(work_item_id, branch_name):
     """
 
-    WorkItemに設定されたリポジトリより変更パス-変更種類辞書を作成し、ログ出力する
+    WorkItemに設定されたリポジトリよりマージ済みPRから変更パス-変更種類辞書を作成し、ログ出力する
 
     Args:
         work_item_id (str): WorkItemのID
@@ -143,7 +143,7 @@ def print_changed_filepath_dict(repo_id_pr_id_list_dict:dict):
             # PRID毎に変更パス-変更種類辞書を取得し、変更パス-変更種類辞書リストを取得する。、
             path_type_dict_list = []
             for pr_id in pr_id_list:
-                path_type_dict = git_repo.get_pr_path_dict(repo_id, pr_id)
+                path_type_dict = git_repo.get_pr_path_dict_by_pr(repo_id, pr_id)
                 path_type_dict_list.append(path_type_dict)
 
             # # 古いPRから順に処理するようにするため、PR_IDの昇順ソートを行う
@@ -179,14 +179,52 @@ def print_changed_filepath_dict(repo_id_pr_id_list_dict:dict):
         raise e
 
 
+def print_changed_filepath_dict_by_repo_diff_branch(work_item_id, source_branch_name, target_branch_name):
+    """
+
+    WorkItemに設定されたリポジトリより変更パス-変更種類辞書を作成し、ログ出力する
+
+    Args:
+        work_item_id (str): WorkItemのID
+        source_branch_name (str): マージ元ブランチ名
+        target_branch_name (str): マージ先ブランチ名
+
+    """   
+    try:
+        repo_id_list = work_item.get_repo_list(work_item_id)
+        
+        for repo_id in repo_id_list:
+            logger.info('■' + git_repo.get_repo_name(repo_id))
+
+            path_type_dict = git_repo.get_pr_path_dict_by_diff_branch(repo_id, source_branch_name, target_branch_name)
+
+            for path in path_type_dict:
+                logger.info(
+                    path_type_dict[path].ljust(10)
+                    + ': '
+                    + path
+                    )
+
+    except RequestException as e:
+        logger.error(e)
+        logger.error("request failed. error=(%s)", e.response.text)
+        raise e
+    except Exception as e:
+        logger.error(e)
+        raise e
+
+
 def check_merged(work_item_id, branch_name):
     """
 
-    リポジトリID-PRID辞書より、変更パス-変更種類辞書を作成し、ログ出力する
+    WorkItemに設定されたPRよりマージ状況のチェックを行う
 
     Args:
         work_item_id (str): WorkItemのID
         branch_name (str): ターゲットブランチ名
+
+    Returns:
+        boolean: チェック結果
 
     """  
 

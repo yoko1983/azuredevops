@@ -206,7 +206,7 @@ def get_pr_id_list(repo_id, branch_name, status):
     
     return list
 
-def get_pr_path_dict(repo_id, pr_id):
+def get_pr_path_dict_by_pr(repo_id, pr_id):
     """
 
     PRIDのリストを取得する。
@@ -265,3 +265,46 @@ def get_pr_path_dict(repo_id, pr_id):
 
     return path_dict
 
+def get_pr_path_dict_by_diff_branch(repo_id, source_branch_name, target_branch_name):
+    """
+
+    RepoIDよりのリストを取得する。
+
+    Args:
+        repo_id (str): レポジトリのID
+        source_branch_name (str): マージ元ブランチ名
+        target_branch_name (str): マージ先ブランチ名
+
+    Raises:
+        RequestException: HttpRequestに失敗した場合
+
+    Returns:
+        list: PRIDのリスト。
+
+    """    
+    list=[]
+
+    params = { 
+        '$top': 100000,
+        'baseVersion': target_branch_name,
+        'targetVersion': source_branch_name,
+        'api-version': api_version
+    }
+
+    url = url_base + repo_id + '/diffs/commits'
+
+    res = requests.get(url, params=params, auth=(id, pw))
+
+    res.raise_for_status()
+
+    res_data = res.json()
+
+    path_dict = {}
+    for change in res_data["changes"]:
+        path = change['item']['path']
+        change_type = change['changeType']
+        git_object_type = change['item']['gitObjectType']
+        if git_object_type == 'blob':
+            path_dict[path] = change_type
+
+    return path_dict

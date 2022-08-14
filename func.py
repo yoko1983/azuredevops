@@ -5,7 +5,7 @@ from logging import getLogger
 
 logger = getLogger(__name__)
 
-def get_pr_dict(work_item_id, branch_name):
+def get_pr_dict(work_item_id: int, branch_name: str) -> dict:
     """
 
     WorkItemに設定されたPRについてPR辞書を取得する。
@@ -58,7 +58,7 @@ def get_pr_dict(work_item_id, branch_name):
 
     return pr_dict
 
-def print_changed_filepath_dict_by_pr(work_item_id, branch_name):
+def print_changed_filepath_dict_by_pr(work_item_id: int, branch_name: str):
     """
 
     WorkItemに設定されたPRより変更パス-変更種類辞書を作成し、ログ出力する
@@ -91,7 +91,7 @@ def print_changed_filepath_dict_by_pr(work_item_id, branch_name):
         logger.error(e)
         raise e
 
-def print_changed_filepath_dict_by_repo_pr(work_item_id, branch_name):
+def print_changed_filepath_dict_by_repo_pr(work_item_id: int, branch_name: str):
     """
 
     WorkItemに設定されたリポジトリよりマージ済みPRから変更パス-変更種類辞書を作成し、ログ出力する
@@ -179,7 +179,7 @@ def print_changed_filepath_dict(repo_id_pr_id_list_dict:dict):
         raise e
 
 
-def print_changed_filepath_dict_by_repo_diff_branch(work_item_id, source_branch_name, target_branch_name):
+def print_changed_filepath_dict_by_repo_diff_branch(work_item_id: int, source_branch_name: str, target_branch_name: str):
     """
 
     WorkItemに設定されたリポジトリより変更パス-変更種類辞書を作成し、ログ出力する
@@ -214,7 +214,7 @@ def print_changed_filepath_dict_by_repo_diff_branch(work_item_id, source_branch_
         raise e
 
 
-def check_merged(work_item_id, branch_name):
+def check_merged(work_item_id: int, branch_name: str) -> bool:
     """
 
     WorkItemに設定されたPRよりマージ状況のチェックを行う
@@ -224,7 +224,7 @@ def check_merged(work_item_id, branch_name):
         branch_name (str): ターゲットブランチ名
 
     Returns:
-        boolean: チェック結果
+        bool: チェック結果
 
     """  
 

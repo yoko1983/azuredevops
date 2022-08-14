@@ -18,7 +18,7 @@ url_base=url_core + organization + '/'+ project +'/_apis/git/repositories/'
 api_version=settings_data['ads']['api_version']
 
 
-def get_repo_name(repo_id):
+def get_repo_name(repo_id :str) -> str:
     """
 
     リポジトリ名を取得する。
@@ -45,7 +45,7 @@ def get_repo_name(repo_id):
     res_data = res.json()
     return res_data['name']
 
-def get_repo_id(repo_name):
+def get_repo_id(repo_name :str) -> str:
     """
 
     リポジトリIDを取得する。
@@ -72,7 +72,7 @@ def get_repo_id(repo_name):
     res_data = res.json()
     return res_data['id']
 
-def get_pr(repo_id, pr_id, target_branch):
+def get_pr(repo_id :str, pr_id :int, target_branch :str) -> PullRequest:
     """
 
     PRを取得する。
@@ -119,7 +119,7 @@ def get_pr(repo_id, pr_id, target_branch):
 
     return pr
 
-def get_pr_dict(repo_id, branch_name, status):
+def get_pr_dict(repo_id :str, branch_name :str, status :str) -> dict:
     """
 
     PR辞書を取得する。
@@ -168,7 +168,7 @@ def get_pr_dict(repo_id, branch_name, status):
     
     return pr_dict
 
-def get_pr_id_list(repo_id, branch_name, status):
+def get_pr_id_list(repo_id :str, branch_name :str, status :str) -> list:
     """
 
     PRIDのリストを取得する。
@@ -206,10 +206,10 @@ def get_pr_id_list(repo_id, branch_name, status):
     
     return list
 
-def get_pr_path_dict_by_pr(repo_id, pr_id):
+def get_pr_path_dict_by_pr(repo_id :str, pr_id :int) -> dict:
     """
 
-    PRIDのリストを取得する。
+    PRIDより変更パス-変更種類辞書を取得する。
 
     Args:
         repo_id (str): レポジトリのID
@@ -265,10 +265,10 @@ def get_pr_path_dict_by_pr(repo_id, pr_id):
 
     return path_dict
 
-def get_pr_path_dict_by_diff_branch(repo_id, source_branch_name, target_branch_name):
+def get_pr_path_dict_by_diff_branch(repo_id :str, source_branch_name :str, target_branch_name :str) -> dict:
     """
 
-    RepoIDよりのリストを取得する。
+    RepoIDとブランチ差分より変更パス-変更種類辞書を取得する。
 
     Args:
         repo_id (str): レポジトリのID
@@ -279,7 +279,7 @@ def get_pr_path_dict_by_diff_branch(repo_id, source_branch_name, target_branch_n
         RequestException: HttpRequestに失敗した場合
 
     Returns:
-        list: PRIDのリスト。
+        dict: 変更パス-変更種類辞書(key:変更パス(str), value:変更種類(str))
 
     """    
     list=[]

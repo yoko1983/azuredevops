@@ -22,7 +22,7 @@ api_version=settings_data['ads']['api_version']
 
 work_item_field_date='Microsoft.VSTS.CodeReview.AcceptedDate'
 
-def convert_str_to_datetime(str):
+def convert_str_to_datetime(str: str) -> datetime:
     """
 
     文字列のISO8601のUTC（協定世界時）をdatetimeに変換
@@ -42,7 +42,7 @@ def convert_str_to_datetime(str):
     return datetime.datetime.fromisoformat(yyyymmddhhmmss + sss + '+00:00')
     
 
-def get_nowdate(work_item_id):
+def get_nowdate(work_item_id: int) -> datetime:
     """
 
     日付を取得する。
@@ -76,10 +76,10 @@ def get_nowdate(work_item_id):
     
     return res_data["fields"][work_item_field_date]
 
-def get_pr_id_dict(work_item_id):
+def get_pr_id_dict(work_item_id: int) -> dict:
     """
 
-    PRリンクよりPRリストを取得する。
+    PRリンクよりPR辞書を取得する。
 
     Args:
         work_item_id (int): WorkItemのID
@@ -122,7 +122,7 @@ def get_pr_id_dict(work_item_id):
 
     return pr_dict
 
-def get_repo_list(work_item_id):
+def get_repo_list(work_item_id: int) -> list:
     """
 
     リポジトリリンク（ブランチリンク）よりリポジトリIDリストを取得する。
@@ -134,7 +134,7 @@ def get_repo_list(work_item_id):
         RequestException: HttpRequestに失敗した場合
 
     Returns:
-        str[]: リポジトリIDのリスト
+        list: リポジトリID(str)のリスト
 
     """
     params = { 
@@ -165,7 +165,7 @@ def get_repo_list(work_item_id):
 
     return repo_list
 
-def get_attachement(id):
+def get_attachement(id: str) -> str:
     """
 
     添付ファイルを取得する。
@@ -202,7 +202,7 @@ def get_attachement(id):
 
     return save_file_path
 
-def get_file(work_item_id, file_name):
+def get_file(work_item_id: int, file_name: str) -> str:
     """
 
     ファイル添付リンクより添付ファイルを取得する。
@@ -254,7 +254,7 @@ def get_file(work_item_id, file_name):
 
     return get_attachement(file_id_newest)
 
-def get(work_item_id):
+def get(work_item_id: int):
     """
 
     WorkItemのJSON形式データを取得する。
@@ -288,13 +288,14 @@ def get(work_item_id):
 
     return json.dumps(res_data) 
 
-def update_repolink(work_item_id, repo_name, branch_name):
+def update_repolink(work_item_id: int, repo_id: str,  repo_name: str, branch_name: str):
     """
 
     リポジトリリンク（ブランチリンク）を追加する。
 
     Args:
         work_item_id (int): WorkItemのID
+        repo_id (str): リポジトリID
         repo_name (str): リポジトリ名
         branch_name (str): ブランチ名
 
@@ -311,10 +312,6 @@ def update_repolink(work_item_id, repo_name, branch_name):
         '$expand': 'all',
         'api-version': api_version
     }
-
-    repo_id = git_repo.get_repo_id(repo_name)
-    if repo_id == None:
-        return None
 
     url_parts = urllib.parse.quote(project +'/' + repo_id + '/GB' + branch_name)
     data = { 
@@ -341,10 +338,9 @@ def update_repolink(work_item_id, repo_name, branch_name):
 
     res.raise_for_status()
 
-    return True
 
 
-def update_nowdate(work_item_id):
+def update_nowdate(work_item_id: int):
     """
 
     現在時刻で日付を更新する。
@@ -387,5 +383,4 @@ def update_nowdate(work_item_id):
 
     res.raise_for_status()
 
-    return True
 

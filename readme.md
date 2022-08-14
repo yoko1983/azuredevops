@@ -5,11 +5,11 @@ GitHubよりcloneし、プログラムを実行できるように準備を行う
 
 `git clone https://github.com/yoko1983/azuredevops.git`
 
-`python3 -m venv env/azuredevops`
-
-`source env/azuredevops/bin/activate`
-
 `cd azuredevops/`
+
+`python3 -m venv venv`
+
+`source venv/bin/activate`
 
 `pip3 install -r requirements.txt`
 
